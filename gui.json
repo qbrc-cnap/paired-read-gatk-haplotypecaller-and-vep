@@ -2,7 +2,7 @@
 	"input_elements": [
 		{
 			"target": {
-				"target_ids": ["PairedHaplotypecallerAndVepWorkflow.r1_files", "PairedRnaSeqAndDgeWorkflow.r2_files"],
+				"target_ids": ["PairedHaplotypecallerAndVepWorkflow.r1_files", "PairedHaplotypecallerAndVepWorkflow.r2_files"],
 				"name": "input_files",
 				"handler": "input_mapping.py"
 			},
@@ -12,14 +12,14 @@
 				"label": "Input files:",
 				"choose_multiple": true,
 				"description": "Choose input fastq-format files to analyze.  Files should end with \"_R1.fastq.gz\" or \"_R2.fastq.gz\".  Unpaired files will be ignored and NOT analyzed."
-			}	
+			}
 		},
 		{
 			"target": {
-				"target_ids": ["PairedRnaSeqAndDgeWorkflow.genome", 
-					"PairedRnaSeqAndDgeWorkflow.star_index_path", 
-					"PairedRnaSeqAndDgeWorkflow.gtf",
-					"PairedRnaSeqAndDgeWorkflow.bed_annotations"
+				"target_ids": ["PairedHaplotypecallerAndVepWorkflow.genome", 
+					"PairedHaplotypecallerAndVepWorkflow.star_index_path", 
+					"PairedHaplotypecallerAndVepWorkflow.gtf",
+					"PairedHaplotypecallerAndVepWorkflow.bed_annotations"
 				],
 				"name": "genome_choice",
 				"handler": "genome_mapper.py"
@@ -41,7 +41,7 @@
 			}
 		},
 		{
-			"target":"PairedRnaSeqAndDgeWorkflow.output_zip_name",
+			"target":"PairedHaplotypecallerAndVepWorkflow.output_zip_name",
 			"display_element": {
 				"type": "text",
 				"label": "Output zip-archive name:",
@@ -49,7 +49,7 @@
 			}
 		},
 		{
-			"target": "PairedRnaSeqAndDgeWorkflow.git_repo_url",
+			"target": "PairedHaplotypecallerAndVepWorkflow.git_repo_url",
 			"display_element": {
 				"type": "dynamic_hidden",
 				"handler": "add_git_repo_url.py",
@@ -59,7 +59,7 @@
 			}
 		},
 		{
-			"target": "PairedRnaSeqAndDgeWorkflow.git_commit_hash",
+			"target": "PairedHaplotypecallerAndVepWorkflow.git_commit_hash",
 			"display_element": {
 				"type": "dynamic_hidden",
 				"handler": "add_git_hash.py",
