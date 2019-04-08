@@ -23,7 +23,7 @@ workflow SingleSampleHaplotypecallerWorkflow {
     File known_indels
     File known_indels_index
 
-    Array[String] scattered_calling_intervals
+    Array[String] contigs
 
     Int small_disk
     Int medium_disk
@@ -75,7 +75,7 @@ workflow SingleSampleHaplotypecallerWorkflow {
     }
 
     # Scatters over the contig intervals
-    scatter (scatter_interval in scattered_calling_intervals) {
+    scatter (scatter_interval in contigs) {
         # Identifies variants with GATK's HaplotypeCaller
         call gatk.haplotypecaller as haplotypecaller {
             input:
