@@ -56,9 +56,26 @@ task perform_align {
     File ref_pac
 
     command {
+        RGID="N000.1"
+        RGPU="X0000XXXX000000.1.NNNN"
+        RGPL="illumina"
+        RGLB="XXX"
+        RGSM="${sample_name}""
+        RGCN="unknown"
         bwa mem -p 6 ${ref_fasta} ${r1_fastq} ${r2_fastq} \
         | samtools view -bht ${ref_fasta} \
-        | samtools sort -o ${sample_name}.bam;
+        | samtools sort -o ${sample_name}.preid.bam;
+        samtools index ${sample_name}.preid.bam;
+        java -Xmx2500m -jar ${PICARD_JAR} \
+            AddOrReplaceReadGroups \
+            I=${sample_name}.preid.bam \
+            O=${sample_name}.bam \
+            RGID=${RGID} \
+            RGPU=${RGPU} \
+            RGPL=${RGPL} \
+            RGLB=${RGLB} \
+            RGSM=${RGSM} \
+            RGCN=${RGCN};
         samtools index ${sample_name}.bam;
     }
 
