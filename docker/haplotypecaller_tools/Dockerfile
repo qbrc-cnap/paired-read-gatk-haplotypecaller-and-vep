@@ -36,6 +36,8 @@ RUN apt-get update && \
     git \
     unzip
 
+RUN mkdir -p /opt/software 
+
 # Install samtools:
 RUN cd /opt/software && \
   wget https://github.com/samtools/samtools/releases/download/1.9/samtools-1.9.tar.bz2 && \
@@ -43,7 +45,8 @@ RUN cd /opt/software && \
   cd samtools-1.9 && \
   ./configure --prefix=/opt/software/samtools && \
   make && \
-  make install
+  make install && \
+  rm /opt/software/samtools-1.9.tar.bz2
 ENV PATH="/opt/software/samtools/bin:${PATH}"
 
 # Get the Picard JAR:
@@ -53,10 +56,10 @@ RUN mkdir -p /opt/software/picard && \
 ENV PICARD_JAR=/opt/software/picard/picard.jar
 
 # Install BWA
-RUN mkdir -p /opt/software/bwa && \
-  cd /opt/software/picard && \
+RUN mkdir -p /opt/software/ && \
+  cd /opt/software/ && \
   wget https://github.com/lh3/bwa/archive/v0.7.17.tar.gz && \
-  tar xzf bwa-0.7.17.tar.gz && \
+  tar xzf v0.7.17.tar.gz && \
   cd bwa-0.7.17 && \
   make
 ENV PATH="/opt/software/bwa-0.7.17:${PATH}"
@@ -65,5 +68,5 @@ ENV PATH="/opt/software/bwa-0.7.17:${PATH}"
 RUN mkdir -p /opt/software/gatk && \
   cd /opt/software/gatk && \
   wget https://github.com/broadinstitute/gatk/releases/download/4.1.1.0/gatk-4.1.1.0.zip && \
-  unzip unzip gatk-4.1.1.0.zip
+  unzip gatk-4.1.1.0.zip
 ENV GATK_JAR=/opt/software/gatk/gatk-4.1.1.0/gatk-package-4.1.1.0-local.jar
