@@ -9,6 +9,7 @@ workflow gatk_test {
     File dbsnp_index
     File known_indels
     File known_indels_index
+    Array[String] contigs
 
     call base_recalibrator {
         input:
@@ -33,8 +34,32 @@ workflow gatk_test {
             ref_dict = ref_dict
     }
 
-    output {
+    scatter (scatter_interval in contigs) {
+        # Identifies variants with GATK's HaplotypeCaller
+        call haplotypecaller {
+            input:
+                input_bam = apply_recal.recalibrated_bam,
+                input_bam_index = apply_recal.recalibrated_bam_index,
+                interval = scatter_interval,
+                gvcf_name = sample_name,
+                ref_dict = ref_dict,
+                ref_fasta = ref_fasta,
+                ref_fasta_index = ref_fasta_index,
+        }
+    }
+    
+    # Merges the scattered VCFs together
+    call merge_vcf {
+        input:
+            input_vcfs = haplotypecaller.output_vcf,
+            sample_name = sample_name,
+            ref_dict = ref_dict,
+            ref_fasta = ref_fasta,
+            ref_fasta_index = ref_fasta_index
+    }
 
+    output {
+        File vcf = merge_vcf.output_vcf
     }
 }
 
