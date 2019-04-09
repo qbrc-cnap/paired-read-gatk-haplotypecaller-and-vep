@@ -76,7 +76,7 @@ task base_recalibrator {
     File known_indels_index
 
     command {
-        java -Xmx4000m -jar ${GATK} \
+        java -Xmx4000m -jar ${GATK_JAR} \
             BaseRecalibrator \
             -R ${ref_fasta} \
             -I ${input_bam} \
@@ -100,7 +100,7 @@ task apply_recalibration {
     File ref_dict
 
     command {
-        java -Xmx4000m -jar ${GATK} \
+        java -Xmx4000m -jar ${GATK_JAR} \
             ApplyBQSR \
             -R ${ref_fasta} \
             -I ${input_bam} \
@@ -124,7 +124,7 @@ task haplotypecaller {
     String interval
 
     command {
-        java -Xmx8000m -jar ${GATK} \
+        java -Xmx8000m -jar ${GATK_JAR} \
             HaplotypeCaller \
             -R ${ref_fasta} \
             -I ${input_bam} \
