@@ -104,6 +104,7 @@ workflow SingleSampleHaplotypecallerWorkflow {
     }
 
     output {
+        File vcf = merge_vcf.output_vcf
         File annotated_vcf = vep_annotate.output_vcf
         File annotated_vcf_stats = vep_annotate.vcf_stats
         File bam = alignment.sorted_bam
