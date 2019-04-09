@@ -53,7 +53,18 @@ workflow PPairedHaplotypecallerAndVepWorkflow {
             input:
                 r1_fastq = item.left,
                 r2_fastq = item.right,
-                
+                ref_fasta = ref_fasta,
+                ref_fasta_index = ref_fasta_index,
+                ref_dict = ref_dict,
+                ref_bwt = ref_bwt,
+                ref_sa = ref_sa,
+                ref_amb = ref_amb,
+                ref_ann = ref_ann,
+                dbsnp = dbsnp,
+                dbsnp_index = dbsnp_index,
+                known_indels = known_indels,
+                known_indels_index = known_indels_index,
+                contigs = contigs
         }
     }
 }

@@ -1,5 +1,5 @@
 import "bwa_align.wdl" as bwa_align
-import "gatk_bqsr.wdl" as gatk_bqsr
+import "gatk_tools.wdl" as gatk_tools
 
 workflow SingleSampleHaplotypecallerWorkflow {
     # This workflow operates on a single "sample" and
@@ -24,11 +24,6 @@ workflow SingleSampleHaplotypecallerWorkflow {
     File known_indels_index
 
     Array[String] contigs
-
-    Int small_disk
-    Int medium_disk
-    Int large_disk
-    Int preemptible_tries
 
     # Extract the samplename from the fastq filename
     String sample_name = basename(r1_fastq, "_R1.fastq.gz")
@@ -64,7 +59,7 @@ workflow SingleSampleHaplotypecallerWorkflow {
     }
 
     # Applys the recalibration of reads to the BAM
-    call gatk.apply_recal as apply_recal {
+    call gatk_tools.apply_recalibration as apply_recal {
         input:
             input_bam = alignment.sorted_bam,
             input_bam_index = alignment.sorted_bam_index,
@@ -77,7 +72,7 @@ workflow SingleSampleHaplotypecallerWorkflow {
     # Scatters over the contig intervals
     scatter (scatter_interval in contigs) {
         # Identifies variants with GATK's HaplotypeCaller
-        call gatk.haplotypecaller as haplotypecaller {
+        call gatk_tools.haplotypecaller as haplotypecaller {
             input:
                 input_bam = apply_recal.recalibrated_bam,
                 input_bam_index = apply_recal.recalibrated_bam_index,
@@ -90,7 +85,7 @@ workflow SingleSampleHaplotypecallerWorkflow {
     }
     
     # Merges the scattered VCFs together
-    call picard_tools.picard_mergevcf as merge_vcf {
+    call gatk_tools.merge_vcf as merge_vcf {
         input:
             input_vcfs = haplotypecaller.output_vcf,
             sample_name = sample_name,
