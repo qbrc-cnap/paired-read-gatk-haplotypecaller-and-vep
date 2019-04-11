@@ -38,6 +38,24 @@ RUN apt-get update && \
 
 RUN mkdir -p /opt/software 
 
+# Install fastQC:
+RUN cd /opt/software && \
+  wget https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.8.zip && \
+  unzip fastqc_v0.11.8.zip && \
+  chmod +x /opt/software/FastQC/fastqc
+ENV PATH="/opt/software/FastQC:${PATH}"
+
+# Install libStatGen and fastQValidator:
+RUN cd /opt/software && \
+  git clone https://github.com/statgen/libStatGen.git && \
+  cd libStatGen && \
+  make && \
+  cd .. && \
+  git clone https://github.com/statgen/fastQValidator.git && \
+  cd fastQValidator && \
+  make && \
+make install
+
 # Install samtools:
 RUN cd /opt/software && \
   wget https://github.com/samtools/samtools/releases/download/1.9/samtools-1.9.tar.bz2 && \
