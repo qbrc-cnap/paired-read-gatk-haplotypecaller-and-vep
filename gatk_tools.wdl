@@ -98,6 +98,7 @@ task deduplicate_bam {
     output {
         File sorted_bam = "${sample_name}.bam"
         File sorted_bam_index = "${sample_name}.bai"
+        File deduplication_metrics = "${sample_name}.metrics.out"
     }
 
     runtime {

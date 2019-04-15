@@ -1,4 +1,4 @@
-workflow test_fastqc {
+workflow test_qc {
     File fastq
 
     call run_fastqc{
@@ -11,23 +11,25 @@ workflow test_fastqc {
     }
 }
 
-task run_fastqc {
-    File fastq
+task create_multi_qc {
+    Array[File] alignment_metrics
+    Array[File] dedup_metrics
+    Array[File] r1_fastqc_zips
+    Array[File] r2_fastqc_zips
 
-    String bn = basename(fastq)
-    String target_zip = sub(bn, "\\.fastq\\.gz", "_fastqc.zip")
+    # Runtime parameters
     Int disk_size = 100
 
     command {
-        fastqc ${fastq} -o .
+        multiqc .
     }
 
     output {
-        File fastqc_zip = "${target_zip}"
+        File report = "multiqc_report.html"
     }
 
     runtime {
-        docker: "docker.io/blawney/star_rnaseq:v0.0.1"
+        docker: "docker.io/hsphqbrc/gatk-variant-detection-workflow-tools:1.1"
         cpu: 2
         memory: "4 G"
         disks: "local-disk " + disk_size + " HDD"

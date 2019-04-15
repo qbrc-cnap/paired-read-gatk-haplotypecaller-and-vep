@@ -88,3 +88,7 @@ RUN mkdir -p /opt/software/gatk && \
   wget https://github.com/broadinstitute/gatk/releases/download/4.1.1.0/gatk-4.1.1.0.zip && \
   unzip gatk-4.1.1.0.zip
 ENV GATK_JAR=/opt/software/gatk/gatk-4.1.1.0/gatk-package-4.1.1.0-local.jar
+
+# The scripts for performing pre-workflow checks:
+RUN mkdir /opt/software/precheck
+ADD check_fastq.py /opt/software/precheck/

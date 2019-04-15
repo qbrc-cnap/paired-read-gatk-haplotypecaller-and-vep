@@ -125,5 +125,6 @@ workflow SingleSampleHaplotypecallerWorkflow {
         File annotated_vcf_stats = vep_annotate.vcf_stats
         File bam = alignment.sorted_bam
         File bam_index = alignment.sorted_bam_index
+        File deduplication_metrics = dedup_bam.deduplication_metrics
     }
 }
