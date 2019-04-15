@@ -24,6 +24,9 @@ task vep_annotate {
     String species
     File vep_cache_tar
 
+    # runtime commands
+    Int disk_size = 200
+
     command {
         tar xf ${vep_cache_tar};
         #working_dir=$(pwd)
@@ -41,5 +44,13 @@ task vep_annotate {
     output {
         File output_vcf = "${sample_name}.vep.tsv"
         File vcf_stats = "${sample_name}.vep_stats.html"
+    }
+
+    runtime {
+        docker: "docker.io/ensemblorg/ensembl-vep:release_95.0"
+        cpu: 4
+        memory: "12 G"
+        disks: "local-disk " + disk_size + " HDD"
+        preemptible: 0
     }
 }

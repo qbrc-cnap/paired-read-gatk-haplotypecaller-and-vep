@@ -94,7 +94,7 @@ task base_recalibrator {
 
     runtime {
         docker: "docker.io/hsphqbrc/gatk-variant-detection-workflow-tools:1.1"
-        cpu: 2
+        cpu: 4
         memory: "6 G"
         disks: "local-disk " + disk_size + " HDD"
         preemptible: 0
@@ -130,7 +130,7 @@ task apply_recalibration {
 
     runtime {
         docker: "docker.io/hsphqbrc/gatk-variant-detection-workflow-tools:1.1"
-        cpu: 2
+        cpu: 4
         memory: "6 G"
         disks: "local-disk " + disk_size + " HDD"
         preemptible: 0
@@ -164,7 +164,7 @@ task haplotypecaller {
 
     runtime {
         docker: "docker.io/hsphqbrc/gatk-variant-detection-workflow-tools:1.1"
-        cpu: 2
+        cpu: 8
         memory: "12 G"
         disks: "local-disk " + disk_size + " HDD"
         preemptible: 0
