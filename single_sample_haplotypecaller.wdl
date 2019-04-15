@@ -77,8 +77,8 @@ workflow SingleSampleHaplotypecallerWorkflow {
     # Deduplicate the BAM file
     call gatk_tools.deduplicate_bam as dedup_bam {
         input:
-            input_bam = apply_recal.sorted_bam,
-            input_bam_index = apply_recal.sorted_bam_index,
+            input_bam = apply_recal.recalibrated_bam,
+            input_bam_index = apply_recal.recalibrated_bam_index,
             sample_name = sample_name
     }
 
