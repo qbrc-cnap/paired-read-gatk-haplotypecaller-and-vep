@@ -63,6 +63,41 @@ workflow gatk_test {
     }
 }
 
+task deduplicate_bam {
+    File input_bam
+    File input_bam_index
+    String sample_name
+
+    # runtime commands
+    Int disk_size = 150
+
+    command {
+        java -Xmx3000m $PICARD_JAR \
+            MarkDuplicates \
+            INPUT=${input_bam} \
+            OUTPUT=${sample_name}.dedup.bam \
+            ASSUME_SORTED=TRUE \
+            TMP_DIR=/tmp \
+            REMOVE_DUPLICATES=TRUE \
+            METRICS_FILES=${sample_name}.metrics.out \
+            VALIDATION_STRINGENCY=LENIENT;
+        samtools index ${sample_name}.dedup.bam;
+    }
+
+    output {
+        File sorted_bam = "${sample_name}.bam"
+        File sorted_bam_index = "${sample_name}.bai"
+    }
+
+    runtime {
+        docker: "docker.io/hsphqbrc/gatk-variant-detection-workflow-tools:1.1"
+        cpu: 2
+        memory: "4 G"
+        disks: "local-disk " + disk_size + " HDD"
+        preemptible: 0
+    }
+}
+
 task base_recalibrator {
     File input_bam
     File input_bam_index
@@ -118,14 +153,14 @@ task apply_recalibration {
             ApplyBQSR \
             -R ${ref_fasta} \
             -I ${input_bam} \
-            -O ${sample_name}.bqsr.bam \
+            -O ${sample_name}.bam \
             -bqsr-recal-file ${recalibration_report};
-        samtools index ${sample_name}.bqsr.bam;
+        samtools index ${sample_name}.bam;
     }
 
     output {
-        File recalibrated_bam = "${sample_name}.bqsr.bam"
-        File recalibrated_bam_index = "${sample_name}.bqsr.bai"
+        File recalibrated_bam = "${sample_name}.bam"
+        File recalibrated_bam_index = "${sample_name}.bai"
     }
 
     runtime {
@@ -140,6 +175,9 @@ task apply_recalibration {
 task haplotypecaller {
     File input_bam
     File input_bam_index
+    File input_dedup_bam
+    File input_dedup_bam_index
+    String use_dedup
     String sample_name
     File ref_fasta
     File ref_fasta_index
@@ -150,12 +188,22 @@ task haplotypecaller {
     Int disk_size = 250
 
     command {
-        java -Xmx8000m -jar $GATK_JAR \
-            HaplotypeCaller \
-            -R ${ref_fasta} \
-            -I ${input_bam} \
-            -O ${sample_name}.vcf \
-            -L ${interval};
+        if [ "${use_dedup}" = "true" ]
+        then
+            java -Xmx8000m -jar $GATK_JAR \
+                HaplotypeCaller \
+                -R ${ref_fasta} \
+                -I ${input_dedup_bam} \
+                -O ${sample_name}.vcf \
+                -L ${interval};
+        else
+            java -Xmx8000m -jar $GATK_JAR \
+                HaplotypeCaller \
+                -R ${ref_fasta} \
+                -I ${input_bam} \
+                -O ${sample_name}.vcf \
+                -L ${interval};
+        fi
     }
 
     output {

@@ -8,6 +8,7 @@ workflow PairedHaplotypecallerAndVepWorkflow {
     # Input files
     Array[File] r1_files
     Array[File] r2_files
+    Boolean use_dedup
     
     # Reference files
     File ref_fasta
@@ -68,4 +69,8 @@ workflow PairedHaplotypecallerAndVepWorkflow {
                 contigs = contigs
         }
     }
+}
+
+task zip_results {
+
 }

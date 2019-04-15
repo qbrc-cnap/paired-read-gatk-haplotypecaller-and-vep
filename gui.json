@@ -53,6 +53,14 @@
 			}
 		},
 		{
+			"display_element": {
+				"type": "boolean_checkbox",
+				"label": "Use deduplicated FASTQ",
+				"description": "Please check for high diversity libraries, such as SureSelect. Lower diversity libraries, such as Haloplex, should not use deduplicted FASTQs."
+			},
+			"target": "PairedHaplotypecallerAndVepWorkflow.use_dedup"
+		},
+		{
 			"target":"PairedHaplotypecallerAndVepWorkflow.output_zip_name",
 			"display_element": {
 				"type": "text",

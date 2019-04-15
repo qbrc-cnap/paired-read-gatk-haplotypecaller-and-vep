@@ -11,6 +11,7 @@ workflow SingleSampleHaplotypecallerWorkflow {
     
     File r1_fastq
     File r2_fastq
+    Boolean use_dedup
     File ref_fasta
     File ref_fasta_index
     File ref_dict
@@ -28,6 +29,8 @@ workflow SingleSampleHaplotypecallerWorkflow {
 
     # Extract the samplename from the fastq filename
     String sample_name = basename(r1_fastq, "_R1.fastq.gz")
+
+    # Deduplicate the FASTQ
 
     # Perform the alignment, which output a sorted BAM and BAM index
     call bwa_align.perform_align as alignment {
@@ -65,9 +68,18 @@ workflow SingleSampleHaplotypecallerWorkflow {
             input_bam = alignment.sorted_bam,
             input_bam_index = alignment.sorted_bam_index,
             recalibration_report = base_recal.recalibration_report,
+            sample_name = sample_name,
             ref_fasta = ref_fasta,
             ref_fasta_index = ref_fasta_index,
             ref_dict = ref_dict
+    }
+
+    # Deduplicate the BAM file
+    call gatk_tools.deduplicate_bam as dedup_bam {
+        input:
+            input_bam = apply_recal.sorted_bam,
+            input_bam_index = apply_recal.sorted_bam_index,
+            sample_name = sample_name
     }
 
     # Scatters over the contig intervals
@@ -77,6 +89,9 @@ workflow SingleSampleHaplotypecallerWorkflow {
             input:
                 input_bam = apply_recal.recalibrated_bam,
                 input_bam_index = apply_recal.recalibrated_bam_index,
+                input_dedup_bam = dedup_bam.sorted_bam,
+                input_dedup_bam_index = dedup_bam.sorted_bam_index,
+                use_dedup = use_dedup,
                 interval = scatter_interval,
                 sample_name = sample_name,
                 ref_dict = ref_dict,
