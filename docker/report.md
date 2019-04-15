@@ -23,33 +23,6 @@ The main results are contained in a zip-archive and should be downloaded an "unz
     - Quantification tables, which give the number of reads aligned to each gene.  Files are tab-delimited.  These may be opened with your software of choice, including spreadsheet software such as Excel (note: <https://doi.org/10.1186/s13059-016-1044-7>).  For particulars on how this achieved, please see the featureCounts documentation or publication
 - **Logs**
     - This contains logs and summaries produced by the various tools.  These can be used for troubleshooting, if necessary.
-- **Differential expression results**
-
-    Differential expression results are organized by the contrasts requested.  Thus, each folder, named by the contrast, contains the following files:
-
-    - The differential expression results are summarized in a table in the file named `{{deseq2_output_file_suffix}}`.  It is saved in a tab-delimited text format.  Each row contains information about a particular gene and the results of the statistical test performed.  Note that we have added a couple of columns to the standard DESeq2 output.
-
-    Although the particulars of DESeq2 are different, it can helpful to recall the Student's t-test when thinking about interpretation of the columns.  The parameter estimates and tests are different, but the ideas are very similar.  We are testing the null hypothesis that there is *no change* in the expression of a particular gene between the two conditions.
-
-    The columns and brief interpretations are:
-
-      - **Gene**: The gene symbol
-      - **overall_mean**: You may think of this as a "blended mean" of the expression across all the samples considered (for this gene)
-      - **Group1**: The average of the normalized expressions for samples from condition 1
-      - **Group2**: The average of the normalized expressions for samples from condition 2
-      - **log2FoldChange**: The logarithm (base 2) of the fold-change between the two sample groups.  Note that this is *not* simply based on the ratio of the average expressions in each group.  Details are in the DESEq2 publication.
-      - **lfcSE**:  You may consider this as you would the standard error, which ultimately feeds into the p-value.  Consistent (i.e. not highly variable) expression within each group of samples yields lower standard error and makes it easier to determine if there are true differences in the mean expression of each group
-      - **stat**: The value of the test statistic.
-      - **pvalue**:  The raw p-value of the statistical test.  Lower values indicate more evidence to reject the null hypothesis.
-      - **padj**: The "adjusted" p-value, which adjusts for the large number of statistical tests performed.  This addresses issues encountered in the "multiple-testing problem".  Corrections are based on the Benjamini-Hochberg procedure.
-
-  - Normalized expression table
-
-    A table of normalized read-counts (suitable for using when plotting expression) is provided in `{{normalized_counts_file_suffix}}`.  It is saved in a tab-delimited text file.  If multiple contrasts were performed, there will be differences in the tables of normalized counts, if different samples were used for each contrast.  However, we provide the normalized counts for each contrast since those were the expressions used in performing that particular differential contrast.     
-
-- Figures
-
-    We provide scatter plots of the top differentially expressed genes (if any) for quick reference.  Additionally, we provide a dynamic volcano plot which shows the log2 fold-change and adjusted p-value on a single plot.  This may be opened in any modern web browser.  Note that these figures are used for quick inspection, and it is not expected that such figures will be "publication-ready".  
 
 
 ## Methods:
