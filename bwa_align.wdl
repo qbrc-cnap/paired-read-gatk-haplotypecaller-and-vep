@@ -55,6 +55,9 @@ task perform_align {
     File ref_ann
     File ref_pac
 
+    # runtime commands
+    Int disk_size = 500
+
     command {
         RGID="N000.1"
         RGPU="X0000XXXX000000.1.NNNN"
@@ -62,7 +65,7 @@ task perform_align {
         RGLB="XXX"
         RGSM="${sample_name}""
         RGCN="unknown"
-        bwa mem -p 6 ${ref_fasta} ${r1_fastq} ${r2_fastq} \
+        bwa mem -p 8 ${ref_fasta} ${r1_fastq} ${r2_fastq} \
         | samtools view -bht ${ref_fasta} \
         | samtools sort -o ${sample_name}.preid.bam;
         samtools index ${sample_name}.preid.bam;
@@ -82,5 +85,13 @@ task perform_align {
     output {
         File sorted_bam = "${sample_name}.bam"
         File sorted_bam_index = "${sample_name}.bai"
+    }
+
+    runtime {
+        docker: "docker.io/hsphqbrc/gatk-variant-detection-workflow-tools:1.1"
+        cpu: 8
+        memory: "12 G"
+        disks: "local-disk " + disk_size + " HDD"
+        preemptible: 0
     }
 }
