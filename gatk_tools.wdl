@@ -2,6 +2,7 @@ workflow gatk_test {
     File input_bam
     File input_bam_index
     String sample_name
+    Boolean use_dedup
     File ref_fasta
     File ref_fasta_index
     File ref_dict
@@ -34,12 +35,22 @@ workflow gatk_test {
             ref_dict = ref_dict
     }
 
+    call deduplicate_bam {
+        input:
+            input_bam = input_bam,
+            input_bam_index = input_bam_index,
+            sample_name = sample_name
+    }
+
     scatter (scatter_interval in contigs) {
         # Identifies variants with GATK's HaplotypeCaller
         call haplotypecaller {
             input:
                 input_bam = apply_recalibration.recalibrated_bam,
                 input_bam_index = apply_recalibration.recalibrated_bam_index,
+                input_dedup_bam = deduplicate_bam.sorted_bam,
+                input_dedup_bam_index = deduplicate_bam.sorted_bam_index,
+                use_dedup = use_dedup,
                 interval = scatter_interval,
                 sample_name = sample_name,
                 ref_dict = ref_dict,
