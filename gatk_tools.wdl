@@ -38,10 +38,10 @@ workflow gatk_test {
         # Identifies variants with GATK's HaplotypeCaller
         call haplotypecaller {
             input:
-                input_bam = apply_recal.recalibrated_bam,
-                input_bam_index = apply_recal.recalibrated_bam_index,
+                input_bam = apply_recalibration.recalibrated_bam,
+                input_bam_index = apply_recalibration.recalibrated_bam_index,
                 interval = scatter_interval,
-                gvcf_name = sample_name,
+                sample_name = sample_name,
                 ref_dict = ref_dict,
                 ref_fasta = ref_fasta,
                 ref_fasta_index = ref_fasta_index,
@@ -75,8 +75,11 @@ task base_recalibrator {
     File known_indels
     File known_indels_index
 
+    # runtime commands
+    Int disk_size = 150
+
     command {
-        java -Xmx4000m -jar ${GATK_JAR} \
+        java -Xmx4000m -jar $GATK_JAR \
             BaseRecalibrator \
             -R ${ref_fasta} \
             -I ${input_bam} \
@@ -87,6 +90,14 @@ task base_recalibrator {
     
     output {
         File recalibration_report = "recal_data.table"
+    }
+
+    runtime {
+        docker: "docker.io/hsphqbrc/gatk-variant-detection-workflow-tools:1.1"
+        cpu: 2
+        memory: "6 G"
+        disks: "local-disk " + disk_size + " HDD"
+        preemptible: 0
     }
 }
 
@@ -99,8 +110,11 @@ task apply_recalibration {
     File ref_fasta_index
     File ref_dict
 
+    # runtime commands
+    Int disk_size = 150
+
     command {
-        java -Xmx4000m -jar ${GATK_JAR} \
+        java -Xmx4000m -jar $GATK_JAR \
             ApplyBQSR \
             -R ${ref_fasta} \
             -I ${input_bam} \
@@ -111,6 +125,15 @@ task apply_recalibration {
 
     output {
         File recalibrated_bam = "${sample_name}.bqsr.bam"
+        File recalibrated_bam_index = "${sample_name}.bqsr.bai"
+    }
+
+    runtime {
+        docker: "docker.io/hsphqbrc/gatk-variant-detection-workflow-tools:1.1"
+        cpu: 2
+        memory: "6 G"
+        disks: "local-disk " + disk_size + " HDD"
+        preemptible: 0
     }
 }
 
@@ -123,8 +146,11 @@ task haplotypecaller {
     File ref_dict
     String interval
 
+    # runtime commands
+    Int disk_size = 250
+
     command {
-        java -Xmx8000m -jar ${GATK_JAR} \
+        java -Xmx8000m -jar $GATK_JAR \
             HaplotypeCaller \
             -R ${ref_fasta} \
             -I ${input_bam} \
@@ -135,6 +161,14 @@ task haplotypecaller {
     output {
         File output_vcf = "${sample_name}.vcf"
     }
+
+    runtime {
+        docker: "docker.io/hsphqbrc/gatk-variant-detection-workflow-tools:1.1"
+        cpu: 2
+        memory: "12 G"
+        disks: "local-disk " + disk_size + " HDD"
+        preemptible: 0
+    }
 }
 
 task merge_vcf {
@@ -144,8 +178,11 @@ task merge_vcf {
     File ref_fasta_index
     File ref_dict
 
+    # runtime commands
+    Int disk_size = 500
+
     command {
-        java -Xmx3000m -jar ${PICARD_JAR} \
+        java -Xmx3000m -jar $PICARD_JAR \
             MergeVcfs \
             INPUT=${sep=' INPUT=' input_vcfs} \
             OUTPUT=${sample_name}.vcf
@@ -153,5 +190,13 @@ task merge_vcf {
 
     output {
         File output_vcf = "${sample_name}.vcf"
+    }
+
+    runtime {
+        docker: "docker.io/hsphqbrc/gatk-variant-detection-workflow-tools:1.1"
+        cpu: 2
+        memory: "4 G"
+        disks: "local-disk " + disk_size + " HDD"
+        preemptible: 0
     }
 }
