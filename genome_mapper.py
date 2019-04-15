@@ -18,8 +18,20 @@ def map_inputs(user, unmapped_data, id_list):
     j = json.load(open(resource_file))
 
     d = {}
-    d[id_list[0]] = genome_choice 
-    d[id_list[1]] = j[genome_choice]['star_index']
-    d[id_list[2]] = j[genome_choice]['gtf']
-    d[id_list[3]] = j[genome_choice]['bed_annotations']
-    return d 
+    d[id_list[0]] = genome_choice
+    d[id_list[1]] = j[genome_choice]['ref_fasta']
+    d[id_list[2]] = j[genome_choice]['ref_fasta_index']
+    d[id_list[3]] = j[genome_choice]['ref_dict']
+    d[id_list[4]] = j[genome_choice]['ref_bwt']
+    d[id_list[5]] = j[genome_choice]['ref_sa']
+    d[id_list[6]] = j[genome_choice]['ref_amb']
+    d[id_list[7]] = j[genome_choice]['ref_ann']
+    d[id_list[8]] = j[genome_choice]['ref_pac']
+    d[id_list[9]] = j[genome_choice]['dbsnp']
+    d[id_list[10]] = j[genome_choice]['dbsnp_index']
+    d[id_list[11]] = j[genome_choice]['known_indels']
+    d[id_list[12]] = j[genome_choice]['known_indels_index']
+    d[id_list[13]] = j[genome_choice]['contig_list']
+    d[id_list[14]] = j[genome_choice]['vep_species']
+    d[id_list[15]] = j[genome_choice]['vep_cache_tar']
+    return d

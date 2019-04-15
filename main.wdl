@@ -1,6 +1,6 @@
 import "single_sample_haplotypecaller.wdl" as single_sample_haplotypecaller
 
-workflow PPairedHaplotypecallerAndVepWorkflow {
+workflow PairedHaplotypecallerAndVepWorkflow {
     # This workflow is a 'super' workflow that parallelizes
     # HaplotypeCaller and VEP analysis over multiple samples.
 

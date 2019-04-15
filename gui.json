@@ -17,9 +17,21 @@
 		{
 			"target": {
 				"target_ids": ["PairedHaplotypecallerAndVepWorkflow.genome", 
-					"PairedHaplotypecallerAndVepWorkflow.star_index_path", 
-					"PairedHaplotypecallerAndVepWorkflow.gtf",
-					"PairedHaplotypecallerAndVepWorkflow.bed_annotations"
+					"PairedHaplotypecallerAndVepWorkflow.ref_fasta",
+					"PairedHaplotypecallerAndVepWorkflow.ref_fasta_index",
+					"PairedHaplotypecallerAndVepWorkflow.ref_dict",
+					"PairedHaplotypecallerAndVepWorkflow.ref_bwt",
+					"PairedHaplotypecallerAndVepWorkflow.ref_sa",
+					"PairedHaplotypecallerAndVepWorkflow.ref_amb",
+					"PairedHaplotypecallerAndVepWorkflow.ref_ann",
+					"PairedHaplotypecallerAndVepWorkflow.ref_pac",
+					"PairedHaplotypecallerAndVepWorkflow.dbsnp",
+					"PairedHaplotypecallerAndVepWorkflow.dbsnp_index",
+					"PairedHaplotypecallerAndVepWorkflow.known_indels",
+					"PairedHaplotypecallerAndVepWorkflow.known_indels_index",
+					"PairedHaplotypecallerAndVepWorkflow.contig_list",
+					"PairedHaplotypecallerAndVepWorkflow.vep_species",
+					"PairedHaplotypecallerAndVepWorkflow.vep_cache_tar"
 				],
 				"name": "genome_choice",
 				"handler": "genome_mapper.py"
@@ -34,8 +46,8 @@
 						"display": "Ensembl Homo sapiens GRCh38.95"
 					},
 					{
-						"value": "Ensembl Mus musculus GRCm38.95",
-						"display": "Ensembl Mus musculus GRCm38.95"
+						"value": "Ensembl Homo sapiens GRCh37.95",
+						"display": "Ensembl Homo sapiens GRCh37.95 (hg19)"
 					}
 				]
 			}
