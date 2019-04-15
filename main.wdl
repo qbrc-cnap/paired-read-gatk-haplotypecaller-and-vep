@@ -1,4 +1,5 @@
 import "single_sample_haplotypecaller.wdl" as single_sample_haplotypecaller
+import "fastqc.wdl" as fastqc
 
 workflow PairedHaplotypecallerAndVepWorkflow {
     # This workflow is a 'super' workflow that parallelizes

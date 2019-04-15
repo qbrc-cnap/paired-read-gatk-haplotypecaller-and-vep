@@ -66,16 +66,16 @@ task perform_align {
         | samtools view -bht ${ref_fasta} \
         | samtools sort -o ${sample_name}.preid.bam;
         samtools index ${sample_name}.preid.bam;
-        java -Xmx2500m -jar ${PICARD_JAR} \
+        java -Xmx2500m -jar $PICARD_JAR \
             AddOrReplaceReadGroups \
             I=${sample_name}.preid.bam \
             O=${sample_name}.bam \
-            RGID=${RGID} \
-            RGPU=${RGPU} \
-            RGPL=${RGPL} \
-            RGLB=${RGLB} \
-            RGSM=${RGSM} \
-            RGCN=${RGCN};
+            RGID=$RGID \
+            RGPU=$RGPU \
+            RGPL=$RGPL \
+            RGLB=$RGLB \
+            RGSM=$RGSM \
+            RGCN=$RGCN;
         samtools index ${sample_name}.bam;
     }
 

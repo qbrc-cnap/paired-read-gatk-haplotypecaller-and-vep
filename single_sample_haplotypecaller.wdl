@@ -1,5 +1,6 @@
 import "bwa_align.wdl" as bwa_align
 import "gatk_tools.wdl" as gatk_tools
+import "vep.wdl" as vep
 
 workflow SingleSampleHaplotypecallerWorkflow {
     # This workflow operates on a single "sample" and
@@ -45,7 +46,7 @@ workflow SingleSampleHaplotypecallerWorkflow {
     }
 
     # Identify points of recalibration of the BAM
-    call gatk.base_recalibrator as base_recal {
+    call gatk_tools.base_recalibrator as base_recal {
         input:
             input_bam = alignment.sorted_bam,
             input_bam_index = alignment.sorted_bam_index,
@@ -77,7 +78,7 @@ workflow SingleSampleHaplotypecallerWorkflow {
                 input_bam = apply_recal.recalibrated_bam,
                 input_bam_index = apply_recal.recalibrated_bam_index,
                 interval = scatter_interval,
-                gvcf_name = sample_name,
+                sample_name = sample_name,
                 ref_dict = ref_dict,
                 ref_fasta = ref_fasta,
                 ref_fasta_index = ref_fasta_index,
@@ -100,7 +101,7 @@ workflow SingleSampleHaplotypecallerWorkflow {
             input_vcf = merge_vcf.output_vcf,
             sample_name = sample_name,
             species = vep_species,
-            cache_tar = vep_cache_tar
+            vep_cache_tar = vep_cache_tar
     }
 
     output {

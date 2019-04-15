@@ -25,7 +25,7 @@ task vep_annotate {
     File vep_cache_tar
 
     command {
-        tar xf ${cache_tar};
+        tar xf ${vep_cache_tar};
         #working_dir=$(pwd)
         /opt/vep/src/ensembl-vep/vep \
             -i ${input_vcf} \
