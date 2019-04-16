@@ -38,7 +38,8 @@ task vep_annotate {
             --dir ./vep_data \
             --tab \
             --cache \
-            --offline;
+            --offline \
+            --everything;
     }
 
     output {
