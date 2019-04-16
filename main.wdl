@@ -96,21 +96,59 @@ workflow PairedHaplotypecallerAndVepWorkflow {
             git_commit_hash = git_commit_hash,
             git_repo_url = git_repo_url,
     }
+
+    call zip_results {
+        input:
+            zip_name = output_zip_name,
+            bam_files = single_sample_process.bam,
+            vcf_files = single_sample_process.vcf,
+            tsv_files = single_sample_process.annotated_vcf,
+            vep_stats_files = single_sample_process.annotated_vcf_stats,
+            multiqc_results = multiqc.report,
+            analysis_report = generate_report.report
+    }
 }
 
 task zip_results {
     String zip_name
+    Array[File] bam_files
+    Array[File] vcf_files
+    Array[File] tsv_files
+    Array[File] vep_stats_files
+    File multiqc_results
+    File analysis_report
 
+    # runtime parameters
+    Int disk_size = 1000
 
     command {
-
+        mkdir alignments
+        mv -t alignments ${sep=" " bam_files}
+        zip -r "${zip_name}.alignments.zip" alignments
+        
+        mkdir output
+        mkdir output/VCFs
+        mkdir output/qc
+        mkdir output/TSVs
+        mkdir output/variant_stats
+        mv ${multiqc_results} output
+        mv ${analysis_report} output
+        mv -t output/VCFs ${sep=" " vcf_files}
+        mv -t output/TSVs ${sep=" " tsv_files}
+        mv -t output/variant_stats ${sep=" " vep_stats_files}
+        zip -r "${zip_name}.report_and_output.zip" output
     }
 
     output {
-
+        File zip_out = "${zip_name}.report_and_output.zip"
+        File alignments_zip = "${zip_name}.alignments.zip"
     }
 
     runtime {
-
+        docker: "docker.io/hsphqbrc/gatk-variant-detection-workflow-tools:1.1"
+        cpu: 2
+        memory: "6 G"
+        disks: "local-disk " + disk_size + " HDD"
+        preemptible: 0
     }
 }
