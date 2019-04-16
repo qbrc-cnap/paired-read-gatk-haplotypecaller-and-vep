@@ -103,6 +103,7 @@ def parse_input():
     parser.add_argument('-o', required=True, dest=OUTPUT)
     parser.add_argument('-j', required=True, dest=CFG)
     parser.add_argument('-r1', required=True, dest=R1, nargs='+')
+    parser.add_argument('-r2', required=True, dest=R2, nargs='+')
 
     args = parser.parse_args()
     return vars(args)
@@ -134,10 +135,11 @@ if __name__ == '__main__':
 
     # alter how the files are displayed:
     r1_files = arg_dict[R1]
+    r2_files = arg_dict[R2]
     samples = [os.path.basename(x)[:-len('_R1.fastq.gz')] for x in r1_files]
     file_display = []
-    for r1, s in zip(r1_files, samples):
-        ipd = InputDisplay(s, r1)
+    for r1, r2, s in zip(r1_files, r2_files, samples):
+        ipd = InputDisplay(s, r1, r2)
         file_display.append(ipd)
 
 

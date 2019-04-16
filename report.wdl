@@ -44,7 +44,8 @@ task create_multi_qc {
 }
 
 task generate_report {
-    Array[String] = r1_files
+    Array[String] r1_files
+    Array[String] r2_files
     String genome
     String git_repo_url
     String git_commit_hash

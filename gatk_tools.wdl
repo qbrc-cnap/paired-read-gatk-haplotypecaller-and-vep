@@ -25,6 +25,16 @@ workflow gatk_test {
             known_indels_index = known_indels_index
     }
 
+    call run_alignment_metrics {
+        input:
+            input_bam = input_bam,
+            input_bam_index = input_bam_index,
+            sample_name = sample_name,
+            ref_fasta = ref_fasta,
+            ref_fasta_index = ref_fasta_index,
+            ref_dict = ref_dict
+    }
+
     call apply_recalibration {
         input:
             input_bam = input_bam,
@@ -71,6 +81,39 @@ workflow gatk_test {
 
     output {
         File vcf = merge_vcf.output_vcf
+    }
+}
+
+task run_alignment_metrics {
+    File input_bam
+    File input_bam_index
+    String sample_name
+
+    File ref_fasta
+    File ref_fasta_index
+    File ref_dict
+
+    # Runtime parameters
+    Int disk_dize = 100
+
+    command {
+        java -jar $PICARD_JAR \
+            CollectAlignmentSummaryStatistics \
+            R=${ref_fasta} \
+            I=${input_bam} \
+            O=${sample_name}.alignment_metrics.txt;
+    }
+
+    output {
+        File alignment_metrics = "${sample_name}.alignment_metrics.txt"
+    }
+
+    runtime {
+        docker: "docker.io/blawney/star_rnaseq:v0.0.1"
+        cpu: 2
+        memory: "4 G"
+        disks: "local-disk " + disk_size + " HDD"
+        preemptible: 0
     }
 }
 

@@ -1,4 +1,5 @@
 import "single_sample_haplotypecaller.wdl" as single_sample_haplotypecaller
+import "fastqc.wdl" as fastqc
 import "report.wdl" as reporting
 
 workflow PairedHaplotypecallerAndVepWorkflow {
@@ -9,6 +10,8 @@ workflow PairedHaplotypecallerAndVepWorkflow {
     Array[File] r1_files
     Array[File] r2_files
     Boolean use_dedup
+
+    Array[Pair[File, File]] fastq_pairs = zip(r1_files, r2_files)
     
     # Reference files
     File ref_fasta
@@ -68,21 +71,11 @@ workflow PairedHaplotypecallerAndVepWorkflow {
                 known_indels_index = known_indels_index,
                 contigs = contigs
         }
-
-        call qc.run_alignment_metrics as aln_metrics {
-            input:
-                input_bam = single_sample_process.bam,
-                input_bam_index = single_sample_process.bam_index,
-                sample_name = sample_name,
-                ref_fasta = ref_fasta,
-                ref_fasta_index = ref_fasta_index,
-                ref_dict = ref_dict
-        }
     }
 
     call reporting.create_multi_qc as multiqc {
         input:
-            alignment_metrics = aln_metrics.alignment_metrics,
+            alignment_metrics = single_sample_process.alignment_metrics,
             dedup_metrics = single_sample_process.deduplication_metrics,
             r1_fastqc_zips = fastqc_for_read1.fastqc_zip,
             r2_fastqc_zips = fastqc_for_read2.fastqc_zip
