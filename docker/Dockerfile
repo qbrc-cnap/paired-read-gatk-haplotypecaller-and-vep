@@ -1,4 +1,4 @@
-FROM broadinstitute/java-baseimage
+From debian:stretch
 MAINTAINER HSPH QBRC <ddeconti@hsph.harvard.edu>
 
 RUN apt-get update && \
@@ -13,11 +13,11 @@ RUN apt-get update && \
     zip \
     python3-dev \
     python3-pip \
-    r-base \
+    openjdk-8-jdk \
     pandoc \
-    git \
-    unzip
+    git
 
+# Install all software under /opt/software:
 RUN mkdir -p /opt/software 
 
 # Install fastQC:
@@ -67,7 +67,7 @@ ENV PATH="/opt/software/bwa-0.7.17:${PATH}"
 # Get the GATK JAR:
 RUN mkdir -p /opt/software/gatk && \
   cd /opt/software/gatk && \
-  wget https://github.com/broadinstitute/gatk/releases/download/4.1.1.0/gatk-4.1.1.0.zip && \
+  wget -O gatk-4.1.1.0.zip  https://github.com/broadinstitute/gatk/releases/download/4.1.1.0/gatk-4.1.1.0.zip && \
   unzip gatk-4.1.1.0.zip
 ENV GATK_JAR=/opt/software/gatk/gatk-4.1.1.0/gatk-package-4.1.1.0-local.jar
 
