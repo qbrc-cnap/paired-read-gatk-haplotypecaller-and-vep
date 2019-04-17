@@ -58,9 +58,11 @@ workflow PairedHaplotypecallerAndVepWorkflow {
             input:
                 r1_fastq = item.left,
                 r2_fastq = item.right,
+                use_dedup = use_dedup,
                 ref_fasta = ref_fasta,
                 ref_fasta_index = ref_fasta_index,
                 ref_dict = ref_dict,
+                ref_pac = ref_pac,
                 ref_bwt = ref_bwt,
                 ref_sa = ref_sa,
                 ref_amb = ref_amb,

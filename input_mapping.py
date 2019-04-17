@@ -1,3 +1,5 @@
+#! /usr/bin/python3
+
 from base.models import Resource
 import os
 
