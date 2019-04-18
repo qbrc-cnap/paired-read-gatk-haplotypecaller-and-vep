@@ -25,6 +25,9 @@ workflow SingleSampleHaplotypecallerWorkflow {
     File known_indels
     File known_indels_index
 
+    File vep_cache_tar
+    String vep_species
+
     Array[String] contigs
 
     # Extract the samplename from the fastq filename
@@ -49,8 +52,8 @@ workflow SingleSampleHaplotypecallerWorkflow {
     # Perform alignment QC
     call gatk_tools.run_alignment_metrics as aln_metrics {
         input:
-            input_bam = input_bam,
-            input_bam_index = input_bam_index,
+            input_bam = alignment.sorted_bam,
+            input_bam_index = alignment.sorted_bam_index,
             sample_name = sample_name,
             ref_fasta = ref_fasta,
             ref_fasta_index = ref_fasta_index,
@@ -62,6 +65,7 @@ workflow SingleSampleHaplotypecallerWorkflow {
         input:
             input_bam = alignment.sorted_bam,
             input_bam_index = alignment.sorted_bam_index,
+            sample_name = sample_name,
             dbsnp = dbsnp,
             dbsnp_index = dbsnp_index,
             known_indels = known_indels,
@@ -132,8 +136,6 @@ workflow SingleSampleHaplotypecallerWorkflow {
         File vcf = merge_vcf.output_vcf
         File annotated_vcf = vep_annotate.output_vcf
         File annotated_vcf_stats = vep_annotate.vcf_stats
-        File bam = alignment.sorted_bam
-        File bam_index = alignment.sorted_bam_index
         File deduplication_metrics = dedup_bam.deduplication_metrics
         File alignment_metrics = aln_metrics.alignment_metrics
     }

@@ -63,11 +63,11 @@ task perform_align {
         RGPU="X0000XXXX000000.1.NNNN"
         RGPL="illumina"
         RGLB="XXX"
-        RGSM="${sample_name}""
+        RGSM="${sample_name}"
         RGCN="unknown"
-        bwa mem -p 8 ${ref_fasta} ${r1_fastq} ${r2_fastq} \
-        | samtools view -bht ${ref_fasta} \
-        | samtools sort -o ${sample_name}.preid.bam;
+        bwa mem -t 8 ${ref_fasta} ${r1_fastq} ${r2_fastq} \
+        | samtools view -bht ${ref_fasta} - \
+        | samtools sort -o ${sample_name}.preid.bam -;
         samtools index ${sample_name}.preid.bam;
         java -Xmx2500m -jar $PICARD_JAR \
             AddOrReplaceReadGroups \
@@ -84,7 +84,7 @@ task perform_align {
 
     output {
         File sorted_bam = "${sample_name}.bam"
-        File sorted_bam_index = "${sample_name}.bai"
+        File sorted_bam_index = "${sample_name}.bam.bai"
     }
 
     runtime {

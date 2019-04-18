@@ -94,11 +94,11 @@ task run_alignment_metrics {
     File ref_dict
 
     # Runtime parameters
-    Int disk_dize = 100
+    Int disk_size = 100
 
     command {
         java -jar $PICARD_JAR \
-            CollectAlignmentSummaryStatistics \
+            CollectAlignmentSummaryMetrics \
             R=${ref_fasta} \
             I=${input_bam} \
             O=${sample_name}.alignment_metrics.txt;
@@ -140,7 +140,7 @@ task deduplicate_bam {
 
     output {
         File sorted_bam = "${sample_name}.bam"
-        File sorted_bam_index = "${sample_name}.bai"
+        File sorted_bam_index = "${sample_name}.bam.bai"
         File deduplication_metrics = "${sample_name}.metrics.out"
     }
 
@@ -215,7 +215,7 @@ task apply_recalibration {
 
     output {
         File recalibrated_bam = "${sample_name}.bam"
-        File recalibrated_bam_index = "${sample_name}.bai"
+        File recalibrated_bam_index = "${sample_name}.bam.bai"
     }
 
     runtime {

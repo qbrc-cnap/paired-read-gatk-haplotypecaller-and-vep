@@ -71,6 +71,8 @@ workflow PairedHaplotypecallerAndVepWorkflow {
                 dbsnp_index = dbsnp_index,
                 known_indels = known_indels,
                 known_indels_index = known_indels_index,
+                vep_cache_tar = vep_cache_tar,
+                vep_species = vep_species,
                 contigs = contigs
         }
     }
@@ -95,18 +97,26 @@ workflow PairedHaplotypecallerAndVepWorkflow {
     call zip_results {
         input:
             zip_name = output_zip_name,
-            bam_files = single_sample_process.bam,
             vcf_files = single_sample_process.vcf,
             tsv_files = single_sample_process.annotated_vcf,
             vep_stats_files = single_sample_process.annotated_vcf_stats,
             multiqc_results = multiqc.report,
             analysis_report = generate_report.report
     }
+
+    output {
+        File zip_out = zip_results.zip_out
+    }
+
+    meta {
+        workflow_title: "Paired-end DNA-Seq basic variant calling"
+        workflow_short_description: "For variant calling and variant annotation from a basic WES or WGS DNA-seq experiment"
+        workflow_long_description: "Use this workflow for aligning Illumina HTS reads with BWA, optional deduplication, base quality score recalibration with GATK, variant calling with GATK HaplotypeCaller, and variant annotation with Ensembl's VEP."
+    }
 }
 
 task zip_results {
     String zip_name
-    Array[File] bam_files
     Array[File] vcf_files
     Array[File] tsv_files
     Array[File] vep_stats_files
@@ -114,13 +124,9 @@ task zip_results {
     File analysis_report
 
     # runtime parameters
-    Int disk_size = 1000
+    Int disk_size = 250
 
     command {
-        mkdir alignments
-        mv -t alignments ${sep=" " bam_files}
-        zip -r "${zip_name}.alignments.zip" alignments
-        
         mkdir output
         mkdir output/VCFs
         mkdir output/qc
@@ -136,7 +142,6 @@ task zip_results {
 
     output {
         File zip_out = "${zip_name}.report_and_output.zip"
-        File alignments_zip = "${zip_name}.alignments.zip"
     }
 
     runtime {

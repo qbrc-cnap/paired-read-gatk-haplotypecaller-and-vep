@@ -71,6 +71,20 @@ RUN mkdir -p /opt/software/gatk && \
   unzip gatk-4.1.1.0.zip
 ENV GATK_JAR=/opt/software/gatk/gatk-4.1.1.0/gatk-package-4.1.1.0-local.jar
 
+# Install some Python3 libraries:
+ADD requirements.txt /opt/software/
+RUN pip3 install -r /opt/software/requirements.txt
+
+# Install multiqc:
+RUN pip3 install multiqc
+
+# Install Jinja2 for templating.  Likely installed with other python packages, but just to be sure:
+RUN pip3 install Jinja2
+
+# for multiqc to read commandline:
+ENV LC_ALL=C.UTF-8
+ENV LANG=C.UTF-8
+
 # The scripts for performing pre-workflow checks:
 RUN mkdir /opt/software/precheck
 ADD check_fastq.py /opt/software/precheck/
