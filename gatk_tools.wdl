@@ -126,22 +126,22 @@ task deduplicate_bam {
     Int disk_size = 150
 
     command {
-        java -Xmx3000m $PICARD_JAR \
+        java -Xmx3000m -jar $PICARD_JAR \
             MarkDuplicates \
             INPUT=${input_bam} \
-            OUTPUT=${sample_name}.dedup.bam \
+            OUTPUT=${sample_name}.bam \
             ASSUME_SORTED=TRUE \
             TMP_DIR=/tmp \
             REMOVE_DUPLICATES=TRUE \
-            METRICS_FILES=${sample_name}.metrics.out \
+            METRICS_FILE=${sample_name}.dedup_metrics.txt \
             VALIDATION_STRINGENCY=LENIENT;
-        samtools index ${sample_name}.dedup.bam;
+        samtools index ${sample_name}.bam;
     }
 
     output {
         File sorted_bam = "${sample_name}.bam"
         File sorted_bam_index = "${sample_name}.bam.bai"
-        File deduplication_metrics = "${sample_name}.metrics.out"
+        File deduplication_metrics = "${sample_name}.dedup_metrics.txt"
     }
 
     runtime {

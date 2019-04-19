@@ -63,6 +63,7 @@ task generate_report {
 
         generate_report.py \
           -r1 ${sep=" " r1_files} \
+          -r2 ${sep=" " r2_files} \
           -j config.json \
           -t /opt/report/report.md \
           -o completed_report.md
