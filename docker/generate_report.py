@@ -66,7 +66,7 @@ def get_versions():
     '''
     Runs the command to get the versions
     '''
-    star_version_str = run_cmd('STAR --version')
+    bwa_version_str = run_cmd('bwa', return_stderr=True)
     samtools_version_str = run_cmd('samtools --version')
     multiqc_version_str = run_cmd('multiqc --version')
     fastqc_version_str = run_cmd('fastqc --version')
@@ -74,7 +74,7 @@ def get_versions():
     picard_am_str = run_cmd('java -jar /opt/software/picard/picard.jar CollectAlignmentSummaryMetrics --version', return_stderr=True)
     
     # post-process these to extract just the version number:
-    star_version = star_version_str.strip().split('_')[1]
+    bwa_version = bwa_version_str.split('\n')[2].split(' ')[1]
     samtools_version = samtools_version_str.split('\n')[0].split(' ')[1]
     multiqc_version = multiqc_version_str.strip().split(',')[-1].split(' ')[-1]
     fastqc_version = fastqc_version_str.strip().split(" ")[-1]
@@ -82,7 +82,7 @@ def get_versions():
     picard_am_version = picard_am_str.strip().split(' ')[-1]
 
     d = {}
-    d['star_version'] = star_version
+    d['bwa_version'] = bwa_version
     d['samtools_version'] = samtools_version
     d['multiqc_version'] = multiqc_version
     d['fastqc_version'] = fastqc_version

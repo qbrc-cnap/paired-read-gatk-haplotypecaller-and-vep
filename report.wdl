@@ -47,6 +47,7 @@ task generate_report {
     Array[String] r1_files
     Array[String] r2_files
     String genome
+    String dedup_bool
     String git_repo_url
     String git_commit_hash
 
@@ -57,6 +58,7 @@ task generate_report {
         # make a json file with various parameters:
         echo "{" >> config.json
         echo '"genome": "${genome}",' >>config.json
+        echo '"dedup_bool": "${{dedup_bool}}",' >> config.json
         echo '"git_repo": "${git_repo_url}",' >>config.json
         echo '"git_commit": "${git_commit_hash}"' >>config.json
         echo "}" >> config.json

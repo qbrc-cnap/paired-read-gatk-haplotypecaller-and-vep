@@ -90,6 +90,7 @@ workflow PairedHaplotypecallerAndVepWorkflow {
             r1_files = r1_files,
             r2_files = r2_files,
             genome = genome,
+            dedup_bool = use_dedup,
             git_commit_hash = git_commit_hash,
             git_repo_url = git_repo_url,
     }
