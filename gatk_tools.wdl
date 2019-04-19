@@ -275,7 +275,7 @@ task haplotypecaller {
 }
 
 task merge_vcf {
-    File input_vcfs
+    Array[File] input_vcfs
     String sample_name
     File ref_fasta
     File ref_fasta_index
