@@ -132,7 +132,9 @@ if __name__ == '__main__':
 
     # alter how the files are displayed:
     r1_files = arg_dict[R1]
+    r1_files = [r.split('/')[-1] for r in r1_files]
     r2_files = arg_dict[R2]
+    r2_files = [r.split('/')[-1] for r in r2_files]
     samples = [os.path.basename(x)[:-len('_R1.fastq.gz')] for x in r1_files]
     file_display = []
     for r1, r2, s in zip(r1_files, r2_files, samples):
