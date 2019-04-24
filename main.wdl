@@ -130,7 +130,6 @@ task zip_results {
     command {
         mkdir output
         mkdir output/VCFs
-        mkdir output/qc
         mkdir output/TSVs
         mkdir output/variant_stats
         mv ${multiqc_results} output
