@@ -110,9 +110,9 @@ workflow PairedHaplotypecallerAndVepWorkflow {
     }
 
     meta {
-        workflow_title: "Paired-end DNA-Seq basic variant calling"
-        workflow_short_description: "For variant calling and variant annotation from a basic WES or WGS DNA-seq experiment"
-        workflow_long_description: "Use this workflow for aligning Illumina HTS reads with BWA, optional deduplication, base quality score recalibration with GATK, variant calling with GATK HaplotypeCaller, and variant annotation with Ensembl's VEP."
+        workflow_title: "Germline exome variant calling"
+        workflow_short_description: "A pipline for variant calling and variant annotation from germline exome DNASeq"
+        workflow_long_description: "Use this workflow for aligning paired-end Illumina NGS reads with BWA, optional deduplication, base quality score recalibration with GATK, variant calling with GATK HaplotypeCaller, and variant annotation with Ensembl's VEP."
     }
 }
 
