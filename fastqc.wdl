@@ -27,7 +27,7 @@ task run_fastqc {
     }
 
     runtime {
-        docker: "docker.io/blawney/star_rnaseq:v0.0.1"
+        docker: "docker.io/hsphqbrc/gatk-variant-detection-workflow-tools:1.1"
         cpu: 2
         memory: "4 G"
         disks: "local-disk " + disk_size + " HDD"
