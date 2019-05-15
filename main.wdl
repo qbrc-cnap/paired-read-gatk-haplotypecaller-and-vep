@@ -81,6 +81,7 @@ workflow PairedHaplotypecallerAndVepWorkflow {
         input:
             alignment_metrics = single_sample_process.alignment_metrics,
             dedup_metrics = single_sample_process.deduplication_metrics,
+            coverage_metrics = single_sample_process.coverage_metrics,
             r1_fastqc_zips = fastqc_for_read1.fastqc_zip,
             r2_fastqc_zips = fastqc_for_read2.fastqc_zip
     }

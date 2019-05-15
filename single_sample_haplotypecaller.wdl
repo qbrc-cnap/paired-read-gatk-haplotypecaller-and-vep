@@ -95,6 +95,19 @@ workflow SingleSampleHaplotypecallerWorkflow {
             sample_name = sample_name
     }
 
+    call gatk_tools.coverage_metrics as coverage {
+        input:
+            input_bam = apply_recal.recalibrated_bam,
+            input_bam_index = apply_recal.recalibrated_bam_index,
+            input_dedup_bam = dedup_bam.sorted_bam,
+            input_dedup_bam_index = dedup_bam.sorted_bam_index,
+            use_dedup = use_dedup,
+            sample_name = sample_name,
+            ref_dict = ref_dict,
+            ref_fasta = ref_fasta,
+            ref_fasta_index = ref_fasta_index
+    }
+
     # Scatters over the contig intervals
     scatter (scatter_interval in contigs) {
         # Identifies variants with GATK's HaplotypeCaller
@@ -138,5 +151,6 @@ workflow SingleSampleHaplotypecallerWorkflow {
         File annotated_vcf_stats = vep_annotate.vcf_stats
         File deduplication_metrics = dedup_bam.deduplication_metrics
         File alignment_metrics = aln_metrics.alignment_metrics
+        File coverage_metrics = coverage.coverage_metrics
     }
 }

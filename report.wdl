@@ -20,6 +20,7 @@ workflow test_qc {
 task create_multi_qc {
     Array[File] alignment_metrics
     Array[File] dedup_metrics
+    Array[File] coverage_metrics
     Array[File] r1_fastqc_zips
     Array[File] r2_fastqc_zips
 
