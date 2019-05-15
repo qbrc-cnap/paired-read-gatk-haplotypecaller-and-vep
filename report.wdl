@@ -83,7 +83,7 @@ task generate_report {
     runtime {
         docker: "docker.io/hsphqbrc/gatk-variant-detection-workflow-tools:1.1"
         cpu: 2
-        memory: "6 G"
+        memory: "4 G"
         disks: "local-disk " + disk_size + " HDD"
         preemptible: 0
     }

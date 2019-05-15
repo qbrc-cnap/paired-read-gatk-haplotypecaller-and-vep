@@ -65,7 +65,7 @@ task perform_align {
         RGLB="XXX"
         RGSM="${sample_name}"
         RGCN="unknown"
-        bwa mem -t 8 ${ref_fasta} ${r1_fastq} ${r2_fastq} \
+        bwa mem -t 4 ${ref_fasta} ${r1_fastq} ${r2_fastq} \
         | samtools view -bht ${ref_fasta} - \
         | samtools sort -o ${sample_name}.preid.bam -;
         samtools index ${sample_name}.preid.bam;
@@ -89,7 +89,7 @@ task perform_align {
 
     runtime {
         docker: "docker.io/hsphqbrc/gatk-variant-detection-workflow-tools:1.1"
-        cpu: 8
+        cpu: 4
         memory: "12 G"
         disks: "local-disk " + disk_size + " HDD"
         preemptible: 0
