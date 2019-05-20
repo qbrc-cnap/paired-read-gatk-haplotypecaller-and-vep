@@ -260,7 +260,7 @@ task coverage_metrics {
     }
 
     runtime {
-        docker: "docker.io/hsphqbrc/gatk-mutect2-workflow-tools:1.0"
+        docker: "docker.io/hsphqbrc/gatk-variant-detection-workflow-tools:1.1"
         cpu: 2
         memory: "8 G"
         disks: "local-disk " + disk_size + " HDD"
