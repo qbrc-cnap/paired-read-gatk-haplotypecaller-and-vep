@@ -15,7 +15,8 @@ RUN apt-get update && \
     python3-pip \
     openjdk-8-jdk \
     pandoc \
-    git
+    git \
+    r-base
 
 # Install all software under /opt/software:
 RUN mkdir -p /opt/software 
