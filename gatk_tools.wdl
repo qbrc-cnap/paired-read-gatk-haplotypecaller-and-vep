@@ -247,16 +247,17 @@ task coverage_metrics {
                 CollectWgsMetricsWithNonZeroCoverage \
                 R=${ref_fasta} \
                 I=${input_dedup_bam} \
-                O=${sample_name}.coverage_metrics.txt \
+                O=${sample_name}.coverage_metrics.tmp \
                 CHART=${sample_name}.coverage_histogram.pdf;
         else
             java -jar -Xmx6000m -jar $PICARD_JAR \
                 CollectWgsMetricsWithNonZeroCoverage \
                 R=${ref_fasta} \
                 I=${input_bam} \
-                O=${sample_name}.coverage_metrics.txt \
+                O=${sample_name}.coverage_metrics.tmp \
                 CHART=${sample_name}.coverage_histogram.pdf;
         fi
+        sed 's/picard.analysis.CollectWgsMetricsWithNonZeroCoverage/picard.analysis.CollectWgsMetrics/g' ${sample_name}.coverage_metrics.tmp > ${sample_name}.coverage_metrics.txt
     }
 
     runtime {
