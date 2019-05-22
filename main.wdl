@@ -146,6 +146,7 @@ task zip_results {
     }
 
     runtime {
+        zones: "us-east4-c"
         docker: "docker.io/hsphqbrc/gatk-variant-detection-workflow-tools:1.1"
         cpu: 2
         memory: "6 G"
