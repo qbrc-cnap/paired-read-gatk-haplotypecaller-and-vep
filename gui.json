@@ -25,6 +25,7 @@
 					"PairedHaplotypecallerAndVepWorkflow.ref_amb",
 					"PairedHaplotypecallerAndVepWorkflow.ref_ann",
 					"PairedHaplotypecallerAndVepWorkflow.ref_pac",
+					"PairedHaplotypecallerAndVepWorkflow.ref_exon_intervals",
 					"PairedHaplotypecallerAndVepWorkflow.dbsnp",
 					"PairedHaplotypecallerAndVepWorkflow.dbsnp_index",
 					"PairedHaplotypecallerAndVepWorkflow.known_indels",

@@ -20,5 +20,6 @@
   "PairedHaplotypecallerAndVepWorkflow.git_repo_url": "String",
   "PairedHaplotypecallerAndVepWorkflow.ref_fasta_index": "File",
   "PairedHaplotypecallerAndVepWorkflow.ref_sa": "File",
-  "PairedHaplotypecallerAndVepWorkflow.ref_pac": "File"
+  "PairedHaplotypecallerAndVepWorkflow.ref_pac": "File",
+  "PairedHaplotypecallerAndVepWorkflow.ref_exon_intervals": "File"
 }

@@ -22,6 +22,7 @@ workflow PairedHaplotypecallerAndVepWorkflow {
     File ref_amb
     File ref_ann
     File ref_pac
+    File ref_exon_intervals
 
     # Inputs for GATK BQSR
     File dbsnp
@@ -67,6 +68,7 @@ workflow PairedHaplotypecallerAndVepWorkflow {
                 ref_sa = ref_sa,
                 ref_amb = ref_amb,
                 ref_ann = ref_ann,
+                ref_exon_intervals = ref_exon_intervals,
                 dbsnp = dbsnp,
                 dbsnp_index = dbsnp_index,
                 known_indels = known_indels,
