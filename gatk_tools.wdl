@@ -254,7 +254,7 @@ task coverage_metrics {
                 I=${input_dedup_bam} \
                 INTERVALS=${ref_exon_intervals} \
                 O=${sample_name}.coverage_metrics.txt \
-                CHART=${sample_name}.coverage_histogram.pdf;
+                COVERAGE_CAP=500;
         else
             java -jar -Xmx6000m -jar $PICARD_JAR \
                 CollectWgsMetrics \
@@ -262,7 +262,7 @@ task coverage_metrics {
                 I=${input_bam} \
                 INTERVALS=${ref_exon_intervals} \
                 O=${sample_name}.coverage_metrics.txt \
-                CHART=${sample_name}.coverage_histogram.pdf;
+                COVERAGE_CAP=500;
         fi
     }
 
