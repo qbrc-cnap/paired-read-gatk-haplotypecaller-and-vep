@@ -171,7 +171,8 @@ task base_recalibrator {
     Int disk_size = 150
 
     command {
-        java -Xmx4000m -jar $GATK_JAR \
+        mkdir tmp
+        java -Djava.io.tmpdir=./tmp -Xmx4000m -jar $GATK_JAR \
             BaseRecalibrator \
             -R ${ref_fasta} \
             -I ${input_bam} \
@@ -207,7 +208,8 @@ task apply_recalibration {
     Int disk_size = 150
 
     command {
-        java -Xmx4000m -jar $GATK_JAR \
+        mkdir tmp
+        java -Djava.io.tmpdir=./tmp -Xmx4000m -jar $GATK_JAR \
             ApplyBQSR \
             -R ${ref_fasta} \
             -I ${input_bam} \
@@ -248,7 +250,8 @@ task coverage_metrics {
     command {
         if [ "${use_dedup}" = "true" ]
         then
-            java -jar -Xmx6000m -jar $PICARD_JAR \
+            mkdir tmp
+            java -Djava.io.tmpdir=./tmp -jar -Xmx6000m -jar $PICARD_JAR \
                 CollectWgsMetrics \
                 R=${ref_fasta} \
                 I=${input_dedup_bam} \
@@ -256,7 +259,8 @@ task coverage_metrics {
                 O=${sample_name}.coverage_metrics.txt \
                 COVERAGE_CAP=500;
         else
-            java -jar -Xmx6000m -jar $PICARD_JAR \
+            mkdir tmp
+            java -Djava.io.tmpdir=./tmp -jar -Xmx6000m -jar $PICARD_JAR \
                 CollectWgsMetrics \
                 R=${ref_fasta} \
                 I=${input_bam} \
@@ -298,14 +302,16 @@ task haplotypecaller {
     command {
         if [ "${use_dedup}" = "true" ]
         then
-            java -Xmx8000m -jar $GATK_JAR \
+            mkdir tmp
+            java -Djava.io.tmpdir=./tmp -Xmx8000m -jar $GATK_JAR \
                 HaplotypeCaller \
                 -R ${ref_fasta} \
                 -I ${input_dedup_bam} \
                 -O ${sample_name}.vcf \
                 -L ${interval};
         else
-            java -Xmx8000m -jar $GATK_JAR \
+            mkdir tmp
+            java -Djava.io.tmpdir=./tmp -Xmx8000m -jar $GATK_JAR \
                 HaplotypeCaller \
                 -R ${ref_fasta} \
                 -I ${input_bam} \
@@ -339,7 +345,8 @@ task merge_vcf {
     Int disk_size = 500
 
     command {
-        java -Xmx3000m -jar $PICARD_JAR \
+        mkdir tmp
+        java -Djava.io.tmpdir=./tmp -Xmx3000m -jar $PICARD_JAR \
             MergeVcfs \
             INPUT=${sep=' INPUT=' input_vcfs} \
             OUTPUT=${sample_name}.vcf
