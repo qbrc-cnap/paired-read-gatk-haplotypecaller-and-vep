@@ -88,7 +88,6 @@ task perform_align {
     }
 
     runtime {
-        zones: "us-east4-c"
         docker: "docker.io/hsphqbrc/gatk-variant-detection-workflow-tools:1.1"
         cpu: 4
         memory: "12 G"

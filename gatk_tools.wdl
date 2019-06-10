@@ -109,7 +109,6 @@ task run_alignment_metrics {
     }
 
     runtime {
-        zones: "us-east4-c"
         docker: "docker.io/hsphqbrc/gatk-variant-detection-workflow-tools:1.1"
         cpu: 2
         memory: "4 G"
@@ -146,7 +145,6 @@ task deduplicate_bam {
     }
 
     runtime {
-        zones: "us-east4-c"
         docker: "docker.io/hsphqbrc/gatk-variant-detection-workflow-tools:1.1"
         cpu: 2
         memory: "4 G"
@@ -186,7 +184,6 @@ task base_recalibrator {
     }
 
     runtime {
-        zones: "us-east4-c"
         docker: "docker.io/hsphqbrc/gatk-variant-detection-workflow-tools:1.1"
         cpu: 2
         memory: "6 G"
@@ -224,7 +221,6 @@ task apply_recalibration {
     }
 
     runtime {
-        zones: "us-east4-c"
         docker: "docker.io/hsphqbrc/gatk-variant-detection-workflow-tools:1.1"
         cpu: 2
         memory: "6 G"
@@ -271,7 +267,6 @@ task coverage_metrics {
     }
 
     runtime {
-        zones: "us-east4-c"
         docker: "docker.io/hsphqbrc/gatk-variant-detection-workflow-tools:1.1"
         cpu: 2
         memory: "8 G"
@@ -325,7 +320,6 @@ task haplotypecaller {
     }
 
     runtime {
-        zones: "us-east4-c"
         docker: "docker.io/hsphqbrc/gatk-variant-detection-workflow-tools:1.1"
         cpu: 4
         memory: "12 G"
@@ -357,7 +351,6 @@ task merge_vcf {
     }
 
     runtime {
-        zones: "us-east4-c"
         docker: "docker.io/hsphqbrc/gatk-variant-detection-workflow-tools:1.1"
         cpu: 2
         memory: "4 G"
